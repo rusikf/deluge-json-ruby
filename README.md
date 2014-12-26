@@ -13,4 +13,4 @@ deluge.login 'password'
 
 ### Credits
 
-Heavily based upon the deluge-ruby project by Mikael Wikman. This project is an alternative that makes RPC calls on the daemon directly.
+Heavily based upon the [deluge-ruby](https://github.com/mikaelwikman/deluge-ruby) project by [Mikael Wikman](https://github.com/mikaelwikman). His project is an alternative that makes RPC calls on the daemon directly.
