@@ -1,0 +1,14 @@
+# Body JSON
+body_no_error: '{"id": 1, "result": true, "error": null}'
+body_with_error: '{"id": 1, "result": null, "error": {"message": "Not authenticated", "code": 1}}'
+
+# Header dictionaries
+headers_with_session:
+  Content-Type: 'application/x-json'
+  Server: 'TwistedWeb/14.0.2'
+  Set-Cookie: '_session_id=85caf1e46dd96117011c50b556e61c3b2183; Expires=Sat, 27 Dec 2014 15:03:57 GMT; Path=/json'
+
+headers_no_session:
+  SomeHeader: 'foo'
+  WrongHeaderCookie: 'blah'
+  NameCookieHas: 'xyz'

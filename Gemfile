@@ -5,6 +5,8 @@ group :development do
   gem 'rake'
   gem 'rspec'
   gem 'rubocop'
+  gem 'webmock'
+  gem 'vcr'
 end
 
 gemspec

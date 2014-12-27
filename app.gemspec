@@ -9,7 +9,8 @@ Gem::Specification.new do |gem|
   gem.homepage      = 'https://github.com/jSherz/deluge-ruby'
   gem.executables   = gem.files.grep(/^bin/).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(/^(test|features)/)
-  gem.name          = 'deluge'
+  gem.name          = 'deluge-json'
   gem.require_paths = ['lib']
   gem.version       = '1.0.0'
+  gem.add_dependency('httparty')
 end
