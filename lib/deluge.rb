@@ -20,7 +20,7 @@ class Deluge
   end
 
   def logged_in?
-    false
+    !@session_id.nil?
   end
 
   # Sends a JSON request to Deluge

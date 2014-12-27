@@ -23,11 +23,23 @@ describe Deluge do
       expect(subject).to have_sent_params([dummy(:password)])
     end
 
-    it 'returns false if the login failed' do
-      VCR.use_cassette('login_failed') do
-        response = subject.login('sfh528ysdh4yhsg')
+    context 'login failed' do
+      before :each do
+        VCR.use_cassette('login_failed') do
+          @response = subject.login('sfh528ysdh4yhsg')
+        end
+      end
 
-        expect(response).to be(false)
+      it '#login returns false' do
+        expect(@response).to be(false)
+      end
+
+      it 'does not set a session ID' do
+        expect(subject.session_id).to be_nil
+      end
+
+      it 'does not report being logged in' do
+        expect(subject.logged_in?).to eq(false)
       end
     end
 
@@ -38,12 +50,16 @@ describe Deluge do
         end
       end
 
-      it 'returns true' do
+      it '#login returns true' do
         expect(@response).to be(true)
       end
 
       it 'sets the session ID' do
         expect(subject.session_id).to_not be_nil
+      end
+
+      it 'reports being logged in' do
+        expect(subject.logged_in?).to eq(true)
       end
     end
   end
