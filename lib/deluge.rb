@@ -55,6 +55,13 @@ class Deluge
     response.result['torrents']
   end
 
+  # Starts downloading a torrent URL
+  def add_torrent_url(url, download_location, move_completed_path)
+    params = add_torrent_params(url, download_location, move_completed_path)
+
+    send_request('web.add_torrents', params).result
+  end
+
   # Sends a JSON request to Deluge
   def send_request(method, params = [])
     @last_id += 1
@@ -70,8 +77,23 @@ class Deluge
     response
   end
 
+  private
+
   # Creates the header dictionary used for requests
   def headers(session_id)
     { 'Cookie' => "_session_id=#{session_id}" }
+  end
+
+  # Assembles the parameters used when adding a torrent URL
+  def add_torrent_params(url, download_location, move_completed_path)
+    ['0' => {
+      options: {
+        add_paused: false, compact_allocation: false, download_location: download_location,
+        file_priorities: [], max_connections: -1, max_download_speed: -1,
+        max_upload_slots: -1, max_upload_speed: -1, move_completed: false,
+        move_completed_path: move_completed_path, prioritize_first_last_pieces: false
+      },
+      path: url
+    }]
   end
 end
