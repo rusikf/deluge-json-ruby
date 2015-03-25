@@ -31,6 +31,7 @@ GEM
       slop (~> 3.4)
     rainbow (2.0.0)
     rake (10.3.2)
+    redcarpet (3.2.2)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -56,6 +57,7 @@ GEM
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
+    yard (0.8.7.6)
 
 PLATFORMS
   ruby
@@ -64,7 +66,9 @@ DEPENDENCIES
   deluge-json!
   pry
   rake
+  redcarpet
   rspec
   rubocop
   vcr
   webmock
+  yard

@@ -7,6 +7,8 @@ group :development do
   gem 'rubocop'
   gem 'webmock'
   gem 'vcr'
+  gem 'redcarpet'
+  gem 'yard'
 end
 
 gemspec
