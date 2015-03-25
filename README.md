@@ -7,9 +7,11 @@ This library interacts with the JSON based web ui calls to automate interaction 
 ```ruby
 gem install deluge
 
-deluge = Deluge.new
-deluge.login 'password'
+deluge = Deluge.new('http://my-deluge-host:1234/json')
+deluge.login('password')
 ```
+
+*NB:* Ensure you remember to add the '/json' to your hostname!
 
 ### Credits
 
