@@ -33,6 +33,8 @@ class Deluge
 
   ##
   # Creates a new Deluge instance to connect to the given host.
+  #
+  # @param host See {Deluge#host}.
   def initialize(host)
     @host = host
     @last_request = {}
@@ -42,19 +44,26 @@ class Deluge
   ##
   # Authenticates with the web UI by sending the given password & then connects to the first available host.
   #
-  # The +password+ is set on the web UI under "Preferences" -> "Interface".
-  def login(password)
+  # @param password Set on the web UI under "Preferences" -> "Interface".
+  # @param connect_to The host to connect to, in the form *hostname:port*. If nil, uses the first one found.
+  def login(password, connect_to = nil)
     send_request('auth.login', [password])
 
     # Get available hosts
     hosts = send_request('web.get_hosts').result
 
-    fail 'No hosts avilable on this Deluge host!' if hosts.nil?
+    fail 'No hosts available on this Deluge web UI!' if hosts.nil?
 
-    first_host_hash = hosts.first[0]
+    host = hosts[0] # Default to first host found
 
-    # Connect to first available host
-    send_request('web.connect', [first_host_hash])
+    # Find a matching host, if given
+    if connect_to
+      host = hosts.find { |host| connect_to == "#{host[1]}:#{host[2]}" } || nil
+
+      fail "No host matching '#{connect_to}' was found!" if host.nil?
+    end
+
+    send_request('web.connect', [host[0]])
 
     # Ensure we're connected
     response = send_request('web.connected')
@@ -68,6 +77,7 @@ class Deluge
     !@session_id.nil?
   end
 
+  ##
   # Retrieves the list of current torrents.
   def torrents
     response = send_request('web.update_ui', [UPDATE_UI_PARAMS, {}])
@@ -75,14 +85,31 @@ class Deluge
     response.result['torrents']
   end
 
+  ##
+  # Get basic configuration values, useful for getting the default file save path
+  def config_values
+    send_request('core.get_config_values', [%w(add_paused move_completed download_location max_connections_per_torrent
+                                              max_download_speed_per_torrent compact_allocation move_completed_path
+                                              max_upload_slots_per_torrent max_upload_speed_per_torrent
+                                              prioritize_first_last_pieces)])
+  end
+
+  ##
   # Starts downloading a torrent URL (either a path to a torrent file or a magnet link).
+  #
+  # @param url (see #add_torrent_params)
+  # @param download_location (see #add_torrent_params)
+  # @param move_completed_path (see #add_torrent_params)
   def add_torrent_url(url, download_location, move_completed_path)
     params = add_torrent_params(url, download_location, move_completed_path)
 
     send_request('web.add_torrents', params).result
   end
 
+  ##
   # Sends a raw JSON request to Deluge. Used by other methods to make calls (e.g. adding a new torrent).
+  #
+  # @param method The web UI method, e.g. 'web.update_ui'. Can be determined by viewing traffic sent by a browser.
   def send_request(method, params = [])
     @last_id += 1
 
@@ -99,21 +126,29 @@ class Deluge
 
   private
 
+  ##
   # Creates the header dictionary used for requests (contains the session ID used for authentication).
+  #
+  # @param session_id Used for authentication
   def headers(session_id)
     { 'Cookie' => "_session_id=#{session_id}" }
   end
 
+  ##
   # Assembles the parameters used when adding a torrent URL.
+  #
+  # @param url The torrent or magnet URL
+  # @param download_location The directory to place the torrent's file(s) in
+  # @param move_completed_path The path to move the torrent to, once complete (if applicable)
   def add_torrent_params(url, download_location, move_completed_path)
-    ['0' => {
-      options: {
-        add_paused: false, compact_allocation: false, download_location: download_location,
-        file_priorities: [], max_connections: -1, max_download_speed: -1,
-        max_upload_slots: -1, max_upload_speed: -1, move_completed: false,
-        move_completed_path: move_completed_path, prioritize_first_last_pieces: false
-      },
-      path: url
-    }]
+    [[{
+        path: url,
+        options: {
+          add_paused: false, compact_allocation: false, download_location: download_location,
+          file_priorities: [], max_connections: -1, max_download_speed: -1,
+          max_upload_slots: -1, max_upload_speed: -1, move_completed: false,
+          move_completed_path: move_completed_path, prioritize_first_last_pieces: false
+        }
+    }]]
   end
 end
