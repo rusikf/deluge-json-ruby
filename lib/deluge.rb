@@ -89,9 +89,9 @@ class Deluge
   # Get basic configuration values, useful for getting the default file save path
   def config_values
     send_request('core.get_config_values', [%w(add_paused move_completed download_location max_connections_per_torrent
-                                              max_download_speed_per_torrent compact_allocation move_completed_path
-                                              max_upload_slots_per_torrent max_upload_speed_per_torrent
-                                              prioritize_first_last_pieces)])
+                                               max_download_speed_per_torrent compact_allocation move_completed_path
+                                               max_upload_slots_per_torrent max_upload_speed_per_torrent
+                                               prioritize_first_last_pieces)]).result
   end
 
   ##
