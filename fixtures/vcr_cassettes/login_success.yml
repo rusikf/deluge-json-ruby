@@ -7,12 +7,8 @@ http_interactions:
       encoding: UTF-8
       string: '{"id":1,"method":"auth.login","params":["password1"]}'
     headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
+      Cookie:
+      - _session_id=
   response:
     status:
       code: 200
@@ -21,17 +17,108 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Sat, 27 Dec 2014 14:03:57 GMT
+      - Sat, 16 May 2015 19:47:05 GMT
       Content-Type:
       - application/x-json
       Server:
-      - TwistedWeb/14.0.2
+      - TwistedWeb/13.2.0
       Set-Cookie:
-      - _session_id=85caf1e46dd96117011c50b556e61c3b2183; Expires=Sat, 27 Dec 2014
-        15:03:57 GMT; Path=/json
+      - _session_id=832c364555aabfad02f259b680d647052141; Expires=Sat, 16 May 2015
+        20:47:05 GMT; Path=/json
     body:
-      encoding: ASCII-8BIT
+      encoding: UTF-8
       string: '{"id": 1, "result": true, "error": null}'
     http_version: 
-  recorded_at: Sat, 27 Dec 2014 14:03:57 GMT
+  recorded_at: Sat, 16 May 2015 19:47:05 GMT
+- request:
+    method: post
+    uri: http://localhost:8080/json
+    body:
+      encoding: UTF-8
+      string: '{"id":2,"method":"web.get_hosts","params":[]}'
+    headers:
+      Cookie:
+      - _session_id=832c364555aabfad02f259b680d647052141
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Sat, 16 May 2015 19:47:05 GMT
+      Content-Type:
+      - application/x-json
+      Server:
+      - TwistedWeb/13.2.0
+      Set-Cookie:
+      - _session_id=832c364555aabfad02f259b680d647052141; Expires=Sat, 16 May 2015
+        20:47:05 GMT; Path=/json
+    body:
+      encoding: UTF-8
+      string: '{"id": 2, "result": [["e23746aa9e497d183ec9518a6ed19ce3f37caa90", "127.0.0.1",
+        58846, "Offline"]], "error": null}'
+    http_version: 
+  recorded_at: Sat, 16 May 2015 19:47:05 GMT
+- request:
+    method: post
+    uri: http://localhost:8080/json
+    body:
+      encoding: UTF-8
+      string: '{"id":3,"method":"web.connect","params":["e23746aa9e497d183ec9518a6ed19ce3f37caa90"]}'
+    headers:
+      Cookie:
+      - _session_id=832c364555aabfad02f259b680d647052141
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Sat, 16 May 2015 19:47:05 GMT
+      Content-Type:
+      - application/x-json
+      Server:
+      - TwistedWeb/13.2.0
+      Set-Cookie:
+      - _session_id=832c364555aabfad02f259b680d647052141; Expires=Sat, 16 May 2015
+        20:47:05 GMT; Path=/json
+    body:
+      encoding: UTF-8
+      string: '{"id": 3, "result": null, "error": null}'
+    http_version: 
+  recorded_at: Sat, 16 May 2015 19:47:05 GMT
+- request:
+    method: post
+    uri: http://localhost:8080/json
+    body:
+      encoding: UTF-8
+      string: '{"id":4,"method":"web.connected","params":[]}'
+    headers:
+      Cookie:
+      - _session_id=832c364555aabfad02f259b680d647052141
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Sat, 16 May 2015 19:47:05 GMT
+      Content-Type:
+      - application/x-json
+      Server:
+      - TwistedWeb/13.2.0
+      Set-Cookie:
+      - _session_id=832c364555aabfad02f259b680d647052141; Expires=Sat, 16 May 2015
+        20:47:05 GMT; Path=/json
+    body:
+      encoding: UTF-8
+      string: '{"id": 4, "result": true, "error": null}'
+    http_version: 
+  recorded_at: Sat, 16 May 2015 19:47:05 GMT
 recorded_with: VCR 2.9.3

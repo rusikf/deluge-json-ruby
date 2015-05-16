@@ -14,13 +14,12 @@ describe Deluge do
   end
 
   context '#login' do
-    it 'sends an auth.login request' do
+    it 'sends a connected request when complete' do
       VCR.use_cassette('login_success') do
         subject.login(dummy(:password))
       end
 
-      expect(subject).to have_sent_method('auth.login')
-      expect(subject).to have_sent_params([dummy(:password)])
+      expect(subject).to have_sent_method('web.connected')
     end
 
     context 'login failed' do

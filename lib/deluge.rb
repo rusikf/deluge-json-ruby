@@ -47,7 +47,9 @@ class Deluge
   # @param password Set on the web UI under "Preferences" -> "Interface".
   # @param connect_to The host to connect to, in the form *hostname:port*. If nil, uses the first one found.
   def login(password, connect_to = nil)
-    send_request('auth.login', [password])
+    login_req = send_request('auth.login', [password])
+
+    return false if login_req.nil? || login_req.result == false
 
     # Get available hosts
     hosts = send_request('web.get_hosts').result

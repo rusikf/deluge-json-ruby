@@ -11,4 +11,7 @@ group :development do
   gem 'yard'
 end
 
+gem 'coveralls', require: false
+
 gemspec
+

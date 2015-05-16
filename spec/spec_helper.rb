@@ -3,6 +3,9 @@ require 'pry'
 require 'rspec'
 require 'vcr'
 require 'yaml'
+require 'coveralls'
+
+Coveralls.wear!
 
 VCR.configure do |c|
   c.cassette_library_dir = 'fixtures/vcr_cassettes'
@@ -38,3 +41,4 @@ end
 def load_fixtures(path)
   YAML.load_file(path)
 end
+
