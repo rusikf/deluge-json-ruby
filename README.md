@@ -1,5 +1,7 @@
 ## Deluge Web UI Library
 
+[![Build Status](https://travis-ci.org/jSherz/deluge-json-ruby.svg)](https://travis-ci.org/jSherz/deluge-json-ruby) [![Coverage Status](https://coveralls.io/repos/jSherz/deluge-json-ruby/badge.svg)](https://coveralls.io/r/jSherz/deluge-json-ruby) [![Code Climate](https://codeclimate.com/github/jSherz/deluge-json-ruby/badges/gpa.svg)](https://codeclimate.com/github/jSherz/deluge-json-ruby)
+
 This library interacts with the JSON based web ui calls to automate interaction with the `deluged` daemon.
 
 ### Usage

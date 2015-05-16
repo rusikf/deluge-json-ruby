@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.description   = ''
   gem.summary       = 'Ruby library for the Deluge web interface.'
   gem.files         = `git ls-files`.split($OUTPUT_RECORD_SEPARATOR)
-  gem.homepage      = 'https://github.com/jSherz/deluge-ruby'
+  gem.homepage      = 'https://github.com/jSherz/deluge-json-ruby'
   gem.executables   = gem.files.grep(/^bin/).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(/^(test|features)/)
   gem.name          = 'deluge-json'
