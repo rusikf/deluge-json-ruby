@@ -60,7 +60,7 @@ class Deluge
 
     # Find a matching host, if given
     if connect_to
-      host = hosts.find { |host| connect_to == "#{host[1]}:#{host[2]}" } || nil
+      host = hosts.find { |raw_host| connect_to == "#{raw_host[1]}:#{raw_host[2]}" } || nil
 
       fail "No host matching '#{connect_to}' was found!" if host.nil?
     end
@@ -85,6 +85,18 @@ class Deluge
     response = send_request('web.update_ui', [UPDATE_UI_PARAMS, {}])
 
     response.result['torrents']
+  end
+
+  ##
+  # Gets the files for a torrent hash.
+  def torrent_files(torrent_hash)
+    response = send_request('web.get_torrent_files', [torrent_hash])
+
+    formatted_response = response.result['contents'].map do |_, folder|
+      get_files(folder)
+    end
+
+    formatted_response.flatten
   end
 
   ##
@@ -129,6 +141,20 @@ class Deluge
   private
 
   ##
+  # Gets the files in a returned directory
+  def get_files(directory_hash)
+    directory_hash['contents'].map do |_, file|
+      return get_files(file) if file['type'] == 'dir'
+
+      {
+        path: file['path'],
+        size: file['path'],
+        progress: file['progress'].to_f * 100
+      }
+    end
+  end
+
+  ##
   # Creates the header dictionary used for requests (contains the session ID used for authentication).
   #
   # @param session_id Used for authentication
@@ -144,13 +170,13 @@ class Deluge
   # @param move_completed_path The path to move the torrent to, once complete (if applicable)
   def add_torrent_params(url, download_location, move_completed_path)
     [[{
-        path: url,
-        options: {
-          add_paused: false, compact_allocation: false, download_location: download_location,
-          file_priorities: [], max_connections: -1, max_download_speed: -1,
-          max_upload_slots: -1, max_upload_speed: -1, move_completed: false,
-          move_completed_path: move_completed_path, prioritize_first_last_pieces: false
-        }
+      path: url,
+      options: {
+        add_paused: false, compact_allocation: false, download_location: download_location,
+        file_priorities: [], max_connections: -1, max_download_speed: -1,
+        max_upload_slots: -1, max_upload_speed: -1, move_completed: false,
+        move_completed_path: move_completed_path, prioritize_first_last_pieces: false
+      }
     }]]
   end
 end
