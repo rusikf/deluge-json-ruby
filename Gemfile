@@ -14,4 +14,3 @@ end
 gem 'coveralls', require: false
 
 gemspec
-

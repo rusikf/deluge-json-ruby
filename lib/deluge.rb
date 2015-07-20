@@ -143,15 +143,24 @@ class Deluge
   ##
   # Gets the files in a returned directory
   def get_files(directory_hash)
+    return torrent_file_hash(directory_hash) if directory_hash['type'] == 'file'
+
     directory_hash['contents'].map do |_, file|
       return get_files(file) if file['type'] == 'dir'
 
-      {
-        path: file['path'],
-        size: file['path'],
-        progress: file['progress'].to_f * 100
-      }
+      torrent_file_hash(file)
     end
+  end
+
+  ##
+  # Takes the raw data provided for each torrent file and
+  # returns a sensibly typed hash.
+  def torrent_file_hash(raw_data)
+    {
+      path: raw_data['path'],
+      size: raw_data['size'].to_i,
+      progress: raw_data['progress'].to_f * 100
+    }
   end
 
   ##
