@@ -11,6 +11,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(/^(test|features)/)
   gem.name          = 'deluge-json'
   gem.require_paths = ['lib']
-  gem.version       = '1.0.0'
+  gem.version       = '1.0.1'
   gem.add_dependency('httparty')
 end
