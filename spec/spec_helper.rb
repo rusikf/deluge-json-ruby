@@ -41,4 +41,3 @@ end
 def load_fixtures(path)
   YAML.load_file(path)
 end
-

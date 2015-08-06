@@ -92,9 +92,7 @@ class Deluge
   def torrent_files(torrent_hash)
     response = send_request('web.get_torrent_files', [torrent_hash])
 
-    response.result['contents'].map do |_, folder|
-      get_files(folder)
-    end
+    parse_files(nil, response.result)
   end
 
   ##
@@ -139,22 +137,32 @@ class Deluge
   private
 
   ##
-  # Gets the files in a returned directory
-  def get_files(directory_hash)
-    return torrent_file_hash(directory_hash) if directory_hash['type'] == 'file'
+  # Gets the files and folders in the given directory and all subdirectories.
+  def parse_files(base_path, raw_data)
+    # Return the parsed info if a file
+    return torrent_file_hash(raw_data) if raw_data['type'] == 'file'
 
-    directory_hash['contents'].map do |_, file|
-      return get_files(file) if file['type'] == 'dir'
+    parsed_directories = []
+    parsed_files = []
 
-      torrent_file_hash(file)
+    # If a directory, parse the contents
+    raw_data['contents'].each do |path, item|
+      if item['type'] == 'dir'
+        parsed_directories << parse_files(path, item)
+      else
+        parsed_files << torrent_file_hash(path, item)
+      end
     end
+
+    { name: base_path, files: parsed_files, directories: parsed_directories }
   end
 
   ##
   # Takes the raw data provided for each torrent file and
   # returns a sensibly typed hash.
-  def torrent_file_hash(raw_data)
+  def torrent_file_hash(name, raw_data)
     {
+      name: name,
       path: raw_data['path'],
       size: raw_data['size'].to_i,
       progress: raw_data['progress'].to_f * 100
