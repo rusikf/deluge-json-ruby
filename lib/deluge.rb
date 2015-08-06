@@ -92,11 +92,9 @@ class Deluge
   def torrent_files(torrent_hash)
     response = send_request('web.get_torrent_files', [torrent_hash])
 
-    formatted_response = response.result['contents'].map do |_, folder|
+    response.result['contents'].map do |_, folder|
       get_files(folder)
     end
-
-    formatted_response.flatten
   end
 
   ##
