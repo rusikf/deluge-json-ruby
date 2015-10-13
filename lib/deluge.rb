@@ -110,7 +110,7 @@ class Deluge
   # @param url (see #add_torrent_params)
   # @param download_location (see #add_torrent_params)
   # @param move_completed_path (see #add_torrent_params)
-  def add_torrent_url(url, download_location, move_completed_path)
+  def add_torrent_url(url, download_location, move_completed_path=nil)
     params = add_torrent_params(url, download_location, move_completed_path)
 
     send_request('web.add_torrents', params).result
@@ -184,14 +184,16 @@ class Deluge
   # @param download_location The directory to place the torrent's file(s) in
   # @param move_completed_path The path to move the torrent to, once complete (if applicable)
   def add_torrent_params(url, download_location, move_completed_path)
-    [[{
+    p = {
       path: url,
       options: {
         add_paused: false, compact_allocation: false, download_location: download_location,
         file_priorities: [], max_connections: -1, max_download_speed: -1,
         max_upload_slots: -1, max_upload_speed: -1, move_completed: false,
-        move_completed_path: move_completed_path, prioritize_first_last_pieces: false
+        prioritize_first_last_pieces: false
       }
-    }]]
+    }
+    p[:options][:move_completed_path] = movie_completed_path if move_completed_path
+    [[ p ]]
   end
 end
