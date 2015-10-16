@@ -80,6 +80,24 @@ class Deluge
   end
 
   ##
+  # Check if we are connected
+  def connected?
+    send_request('web.connected').result
+  end
+
+  ## 
+  # Get availbale hosts list
+  def get_hosts
+    send_request('web.get_hosts').result
+  end
+
+  ##
+  # Get torrent info
+  def get_torrent_info(torrent_path)
+    send_request('web.get_torrent_info', [torrent_path]).result
+  end
+
+  ##
   # Retrieves the list of current torrents.
   def torrents
     response = send_request('web.update_ui', [UPDATE_UI_PARAMS, {}])
